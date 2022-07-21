@@ -1,0 +1,31 @@
+---
+version: '3'
+
+services:
+  django:
+    image: acc_manager # run `docker build . -t acc_manager` first
+    volumes:
+    - ./server:/server
+    - accservermanager-data:/data
+    - web-static:/accservermanager/staticfiles
+    command: ./start.sh
+    environment:
+     - ALLOWED_HOSTS=["*"]
+     - SECRET_KEY=123 # should actually be parameterized out
+    ports:
+    - 9232:9232/tcp
+    - 9231:9231/udp
+
+  nginx:
+    image: acc_manager_nginx # Run `docker build . -t acc_manager_nginx` in the nginx/ folder first
+    restart: always
+    ports:
+      - 80:80
+    links:
+      - django:django
+    volumes:
+      - web-static:/home/app/web/staticfiles
+
+volumes:
+  accservermanager-data:
+  web-static:

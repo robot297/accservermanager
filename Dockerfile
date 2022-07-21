@@ -9,14 +9,14 @@ RUN mkdir -p /accservermanager /data
 
 WORKDIR /accservermanager
 
+RUN mkdir staticfiles/
 RUN useradd -ms /bin/bash someuser && \
     chown -R someuser:someuser /accservermanager /data
 
-USER someuser
 VOLUME /data
 
 COPY ./requirements.txt .
-RUN pip3 install --user --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 ENV WINEARCH=win64 \
     WINEDEBUG=-all
@@ -24,5 +24,8 @@ RUN wineboot --init
 
 COPY . /accservermanager
 
-EXPOSE 9231/udp 9232/tcp 8000/tcp
-CMD ["python3", "manage.py", "runserver", "--insecure", "0.0.0.0:8000"]
+RUN chmod +x ./start.sh
+USER someuser
+EXPOSE 9231/udp 9232/tcp 8000
+# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD [ "/start.sh" ]
