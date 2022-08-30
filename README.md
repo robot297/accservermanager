@@ -18,6 +18,11 @@ python manage.py runserver
 
 Now you should be able to access the service at localhost:8000.
 
+### Using Docker Compose
+
+You can use docker compose to stand up a local instance of this as well using the command `docker-compose up -d --build --force-recreate --no-deps`.
+This will rebuild the local docker images and stand up the infrastructure to run the application.
+
 
 ## Dependencies
 ```bash

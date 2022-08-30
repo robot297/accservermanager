@@ -3,7 +3,9 @@ version: '3'
 
 services:
   django:
-    image: acc_manager # run `docker build . -t acc_manager` first
+    build: 
+      context: .
+    # image: acc_manager # run `docker build . -t acc_manager` first
     volumes:
     - ./server:/server
     - accservermanager-data:/data
@@ -17,7 +19,10 @@ services:
     - 9231:9231/udp
 
   nginx:
-    image: acc_manager_nginx # Run `docker build . -t acc_manager_nginx` in the nginx/ folder first
+    build:
+      context: 
+        nginx/
+    # image: acc_manager_nginx # Run `docker build . -t acc_manager_nginx` in the nginx/ folder first
     restart: always
     ports:
       - 80:80
